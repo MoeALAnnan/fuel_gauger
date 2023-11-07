@@ -34,7 +34,8 @@ class EntryManager:
         "Stamp": Stamp, 
         "Date": Date, 
         "Engine Type": engine_type, 
-        "KILO/LIVRE": kilo_or_livre
+        "KILO/LIVRE": kilo_or_livre,
+        "RATE": None
         }
         
         return entry_data
@@ -42,11 +43,13 @@ class EntryManager:
     def handle_store_entries(self):
         entry_data = self.store_entries()
         if entry_data["KILO/LIVRE"] == 1:
-            kilo_or_livre = "KILO" 
+            kilo_or_livre = "KILOGRAMMES" 
             entry_data["KILO/LIVRE"] = kilo_or_livre
+            entry_data["RATE"] = 88
         elif entry_data["KILO/LIVRE"] == 2:
             kilo_or_livre = "LIVRE"
             entry_data["KILO/LIVRE"] = kilo_or_livre
+            entry_data["RATE"] = 194
         else:
             kilo_or_livre = ""
             entry_data["KILO/LIVRE"] = kilo_or_livre
