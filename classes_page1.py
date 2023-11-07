@@ -82,6 +82,3 @@ class page1_EntryManager:
         self.end_mass2_entry.delete(0, tkinter.END)
         
         self.page1_entries.clear()
-    
-    
-        
