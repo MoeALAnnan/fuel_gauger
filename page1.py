@@ -282,7 +282,14 @@ def create_new_frame(frame, button, start_button):
             tkinter.messagebox.showerror("Error", "Please fill in all the entries.")
     def on_next_page():
         if page1_entry_manager.are_entries_filled():
-            page1_entry_manager.store_entries(checker)
+            dictionary_page1 = page1_entry_manager.store_entries(checker)
+            with open('dictionary_page0.pkl', 'rb') as file:
+                dictionary_page0 = pickle.load(file)
+
+            # Merge dictionaries
+            dictionary_page0.update(dictionary_page1)
+            with open('dictionary_page0.pkl', 'wb') as file:
+                pickle.dump(dictionary_page0, file)
             configure_text_kilo_or_livre_page2(checker)
             go_to_second_page()
             error_label.config(text="")  # Clear any previous error message
