@@ -167,6 +167,12 @@ def create_2nd_frame(frame, button, continue_button):
     stp3_right_label.grid(row=0, column=2)
     stp3_right_entry = tkinter.Entry(indicator_step3_frame)
     stp3_right_entry.grid(row=1, column=2)
+    
+    accuracy_frame = tkinter.LabelFrame(fuel_quantity_indicator_frame, text = "FQI Accuracy %")
+    accuracy_frame.grid(row = 3, column = 0, sticky="w", padx=20, pady=10)
+    Accuracy_label = tkinter.Label(accuracy_frame,borderwidth=1, relief="solid", width=17, height=1)
+    Accuracy_label.grid(row=0, column=0, padx=20, pady=20)
+    
 
     back_close_frame = tkinter.Frame(second_frame)
     back_close_frame.grid(row = 6, column = 0, sticky="news", padx=20, pady=20)
@@ -180,17 +186,18 @@ def create_2nd_frame(frame, button, continue_button):
     
     def on_run(): 
         if checker_page2 == 1:
-            step1_uplifted = float(stp1_volume_entry.get()) * (float(Fuel_Density_entry.get()) + (float(Ambient_Temperature_entry.get()) - float(Fuel_Temperature_entry.get()))*0.0008)
-            step2_uplifted = float(stp2_volume_entry.get()) * (float(Fuel_Density_entry.get()) + (float(Ambient_Temperature_entry.get()) - float(Fuel_Temperature_entry.get()))*0.0008)
-            step3_uplifted = float(stp3_volume_entry.get()) * (float(Fuel_Density_entry.get()) + (float(Ambient_Temperature_entry.get()) - float(Fuel_Temperature_entry.get()))*0.0008)
+            step1_uplifted = int(float(stp1_volume_entry.get()) * (float(Fuel_Density_entry.get()) + (float(Ambient_Temperature_entry.get()) - float(Fuel_Temperature_entry.get()))*0.0008))
+            step2_uplifted = int(float(stp2_volume_entry.get()) * (float(Fuel_Density_entry.get()) + (float(Ambient_Temperature_entry.get()) - float(Fuel_Temperature_entry.get()))*0.0008))
+            step3_uplifted = int(float(stp3_volume_entry.get()) * (float(Fuel_Density_entry.get()) + (float(Ambient_Temperature_entry.get()) - float(Fuel_Temperature_entry.get()))*0.0008))
         elif checker_page2 == 2:
-            step1_uplifted = float(stp1_volume_entry.get()) * (float(Fuel_Density_entry.get()) + (float(Ambient_Temperature_entry.get()) - float(Fuel_Temperature_entry.get()))*0.0008) / 0.45359
-            step2_uplifted = float(stp2_volume_entry.get()) * (float(Fuel_Density_entry.get()) + (float(Ambient_Temperature_entry.get()) - float(Fuel_Temperature_entry.get()))*0.0008) / 0.45359
-            step3_uplifted = float(stp3_volume_entry.get()) * (float(Fuel_Density_entry.get()) + (float(Ambient_Temperature_entry.get()) - float(Fuel_Temperature_entry.get()))*0.0008) / 0.45359
+            step1_uplifted = int(float(stp1_volume_entry.get()) * (float(Fuel_Density_entry.get()) + (float(Ambient_Temperature_entry.get()) - float(Fuel_Temperature_entry.get()))*0.0008) / 0.45359)
+            step2_uplifted = int(float(stp2_volume_entry.get()) * (float(Fuel_Density_entry.get()) + (float(Ambient_Temperature_entry.get()) - float(Fuel_Temperature_entry.get()))*0.0008) / 0.45359)
+            step3_uplifted = int(float(stp3_volume_entry.get()) * (float(Fuel_Density_entry.get()) + (float(Ambient_Temperature_entry.get()) - float(Fuel_Temperature_entry.get()))*0.0008) / 0.45359)
         
         FOB_difference = float(stp3_FOB_entry.get()) - float(stp2_FOB_entry.get())
         uplifted_difference = step3_uplifted - step2_uplifted
         accuracy = (FOB_difference / uplifted_difference) * 100 - 100
+        Accuracy_label.configure(text=f'{accuracy:.2f}')
 
         page2_entry_manager = classes_page2.page2_EntryManager(Fuel_Density_entry, Fuel_Temperature_entry, Ambient_Temperature_entry, Pitch_entry, Roll_entry,
                  stp1_volume_entry, stp1_FOB_entry, step1_uplifted, stp1_left_entry, stp1_center_entry, stp1_right_entry,
@@ -206,7 +213,7 @@ def create_2nd_frame(frame, button, continue_button):
             dictionary_page0.update(dictionary_page2)
             with open('dictionary_page0.pkl', 'wb') as file:
                 pickle.dump(dictionary_page0, file)
-            main()
+            main(checker_page2)
             print(step1_uplifted)
             print(step2_uplifted)
             print(step3_uplifted)
